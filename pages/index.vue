@@ -32,14 +32,15 @@ export default {
   data() {
     return {
       books: [],
+      detail: null,
     };
   },
   async asyncData({ $axios }) {
     const books = await $axios.$get('/api/books');
-    return { books }
+    const detail = await $axios.$get('/api/books/1');
+    return { books, detail }
   },
   mounted() {
-    // axios.get('/api/books').then(rsp => console.log(rsp)).catch(err => console.error(err));
     this.$axios.get('/api/books').then(rsp => console.log(rsp)).catch(err => console.error(err));
   },
 }
