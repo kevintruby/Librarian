@@ -28,7 +28,20 @@ import Logo from '~/components/Logo.vue'
 export default {
   components: {
     Logo
-  }
+  },
+  data() {
+    return {
+      books: [],
+    };
+  },
+  async asyncData({ $axios }) {
+    const books = await $axios.$get('/api/books');
+    return { books }
+  },
+  mounted() {
+    // axios.get('/api/books').then(rsp => console.log(rsp)).catch(err => console.error(err));
+    this.$axios.get('/api/books').then(rsp => console.log(rsp)).catch(err => console.error(err));
+  },
 }
 </script>
 

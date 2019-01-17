@@ -69,5 +69,13 @@ module.exports = {
         })
       }
     }
-  }
-}
+  },
+
+  /*
+  ** Register Express API routes here
+  */
+  serverMiddleware: [
+    // API middleware
+    '~/api/index.js'
+  ],
+};
