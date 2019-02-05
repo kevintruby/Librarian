@@ -1,4 +1,3 @@
-// const MongoClient = require('mongodb').MongoClient;
 let mongoose = require('mongoose');
 require('dotenv').config();
 const env = process.env || {};
