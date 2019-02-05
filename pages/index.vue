@@ -8,6 +8,9 @@
       <h2 class="subtitle">
         Personal library tracker, modeled after Plex interface
       </h2>
+      <ul>
+        <li v-for="book in books" :key="book._id">Title: {{ book.title }}</li>
+      </ul>
       <div class="links">
         <a
           href="https://nuxtjs.org/"
@@ -26,6 +29,7 @@
 import Logo from '~/components/Logo.vue'
 
 export default {
+  name: 'IndexPage',
   components: {
     Logo
   },
@@ -41,7 +45,8 @@ export default {
     return { books, detail }
   },
   mounted() {
-    this.$axios.get('/api/books').then(rsp => console.log(rsp)).catch(err => console.error(err));
+    let self = this;
+    this.$axios.get('/api/books').then(rsp => self.books = rsp.data ).catch(err => console.error(err));
   },
 }
 </script>

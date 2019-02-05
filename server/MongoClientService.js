@@ -1,38 +1,54 @@
-const MongoClient = require('mongodb').MongoClient;
-const config = require('dotenv').config();
-const uri = process.env.MONGO_CONNECTION_STRING;
+// const MongoClient = require('mongodb').MongoClient;
+let mongoose = require('mongoose');
+require('dotenv').config();
+const env = process.env || {};
+const uri = `${env.MONGO_CONNECTION_ROOT}://${env.MONGO_AUTH}@${env.MONGO_CLUSTER}`;
+
+const _ = require('lodash');
+
+let BookModel = require('./schemas/bookSchema');
 
 class MongoClientService {
-  constructor() {
-    this.mongo_instance = new MongoClient(uri, { useNewUrlParser: true });
-    // @todo: receive endpoint-specific string to fine tune which database is called?
+  constructor(database = env.MONGO_DATABASE) {
+    this.__connect(database);
+  }
+
+  __connect(database) {
+    mongoose.connect(`${uri}/${database}`)
+      .then(() => {
+        console.log('connection successful');
+      })
+      .catch(err => console.error(err));
   }
 
   getBooksCollection() {
     let self = this;
-    // return 'hello world';
     return new Promise((resolve, reject) => {
-      self.mongo_instance.connect(err => {
-        if(err)
-          reject(err);
-
-        const collection = self.mongo_instance.db('library').collection('books');
-        // console.log(collection);
-
-        collection.find({}).toArray((coll_err, docs) => {
-          if(coll_err) console.log(coll_err);
-          // console.log(docs);
-
-          self.mongo_instance.close();
-          resolve(docs);
-        });
-        self.mongo_instance.close();
-
-        // resolve(collection);
-      });
-      // resolve('hello world; resolved');
+      BookModel.getAllBooks()
+        .then(docs => resolve(docs) )
+        .catch(err => reject(err) );
     });
+  }
+
+  getBookObj(criteria) {
+    let book = null;
+
+    return new Promise((resolve, reject) => {
+      BookModel.find(criteria)
+        .then(doc => {
+          if(!_.isEmpty(doc))
+            book = _.first(doc);
+          resolve(book);
+        }).catch(err => reject(err) );
+    });
+  }
+
+  updateBook(book) {
+    if(_.isEmpty(book))
+      return false;
+
+    book.save().then( doc => console.log(doc) ).catch( err => console.error(err) );
   }
 }
 
-module.exports = MongoClientService;
+module.exports = new MongoClientService();

@@ -8,18 +8,16 @@ const router = Router();
 
 // Mock Books
 const books = [
-  { name: 'The Fellowship of the Ring' },
-  { name: 'The Two Towers' },
-  { name: 'Return of the King' }
+  { title: 'The Fellowship of the Ring' },
+  { title: 'The Two Towers' },
+  { title: 'Return of the King' }
 ];
 
 /* GET routes listing. */
 router.get('/books', function (req, res, next) {
-  let mongo_client_service = new MongoClientService(),
-      books_coll = {};
+  let books_coll = {};
 
-  // console.log(mongo_client_service);
-  mongo_client_service.getBooksCollection().then(rsp => {
+  MongoClientService.getBooksCollection().then(rsp => {
     books_coll = rsp;
     res.json(books_coll);
   }).catch(err => {
