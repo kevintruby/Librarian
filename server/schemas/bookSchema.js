@@ -60,10 +60,25 @@ bookSchema.statics.getAllBooks = function() {
     this.find((err, docs) => {
       if(err) {
         console.error(err);
-        return reject(err)
+        return reject(err);
       }
-      resolve(docs)
+      resolve(docs);
     }).catch(err => reject(err));
+  });
+};
+
+bookSchema.statics.getRecentlyAdded = function() {
+  return new Promise((resolve, reject) => {
+    this.find()
+      .order('-createdAt')
+      .limit(10)
+      .exec((err, docs) => {
+        if(err) {
+          console.error(err);
+          return reject(err);
+        }
+        resolve(docs);
+      }).catch(err => reject(err));
   });
 };
 

@@ -21,7 +21,6 @@ class MongoClientService {
   }
 
   getBooksCollection() {
-    let self = this;
     return new Promise((resolve, reject) => {
       BookModel.getAllBooks()
         .then(docs => resolve(docs) )
