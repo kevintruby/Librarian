@@ -72,7 +72,7 @@ bookSchema.statics.getAllBooks = function() {
 bookSchema.statics.getRecentlyAdded = function() {
   return new Promise((resolve, reject) => {
     this.find()
-      .order('-createdAt')
+      .sort('-createdAt')
       .limit(10)
       .exec((err, docs) => {
         if(err) {
@@ -80,7 +80,7 @@ bookSchema.statics.getRecentlyAdded = function() {
           return reject(err);
         }
         resolve(docs);
-      }).catch(err => reject(err));
+      });
   });
 };
 
