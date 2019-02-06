@@ -44,6 +44,8 @@ let bookSchema = new mongoose.Schema({
   },
   createdAt: Date,
   updatedAt: Date,
+}, {
+  timestamps: true
 });
 
 bookSchema.virtual('fullTitle').get(function() {
@@ -81,19 +83,5 @@ bookSchema.statics.getRecentlyAdded = function() {
       }).catch(err => reject(err));
   });
 };
-
-
-
-bookSchema.pre('save', function (next) {
-  let now = Date.now();
-
-  this.updatedAt = now;
-  // Set a value for createdAt only if it is null
-  if (!this.createdAt) {
-    this.createdAt = now;
-  }
-  // Call the next function in the pre-save chain
-  next()
-});
 
 module.exports = mongoose.model('Book', bookSchema);

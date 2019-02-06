@@ -39,4 +39,4 @@ class GoogleBooksApiInterface {
   }
 }
 
-module.exports = new GoogleBooksApiInterface();
+module.exports = GoogleBooksApiInterface;

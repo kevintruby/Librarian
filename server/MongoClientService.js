@@ -49,4 +49,4 @@ class MongoClientService {
   }
 }
 
-module.exports = new MongoClientService();
+module.exports = MongoClientService;
