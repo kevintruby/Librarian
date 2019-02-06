@@ -50,29 +50,11 @@ router.get('/book-by-isbn/:isbn', function (req, res, next) {
     if(_.isEmpty(book_rsp))
       res.sendStatus(404);
 
-    // @todo: reduce complexity here
-    BookModel.findOne({ isbn }).then(book_doc => {
-      if(!_.isEmpty(book_doc)) {
-        BookModel.findOneAndUpdate({ isbn }, { $set: book_rsp }, { new: true }).then(book_doc => {
-          res.json(book_doc);
-        }).catch(err => {
-          console.error(err);
-          let book = new BookModel(book_rsp);
-          res.json(book);
-        });
-      } else {
-        let book = new BookModel(book_rsp);
-        book.isbn = isbn;
-        // @todo: make use of MongoClientService.updateBookObj() here
-        book.save().then( doc => res.json(doc) ).catch( err => {
-          console.error(err);
-          res.json(book);
-        } );
-      }
+    BookModel.findOneAndUpdate({ isbn }, { $set: book_rsp }, { new: true, upsert: true }).then(book_doc => {
+      res.json(book_doc);
     }).catch(err => {
       console.error(err);
-      let book = new BookModel(book_rsp);
-      res.json(book);
+      res.status(422).json(err);
     });
   }).catch(err => {
     console.error(err);

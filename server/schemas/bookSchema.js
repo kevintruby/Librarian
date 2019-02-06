@@ -84,4 +84,14 @@ bookSchema.statics.getRecentlyAdded = function() {
   });
 };
 
+
+
+// make sure upserts get timestamped
+bookSchema.pre('save', function (next) {
+  if (this.isNew) {
+    this.createdAt = Date.now();
+  }
+  return next();
+});
+
 module.exports = mongoose.model('Book', bookSchema);
