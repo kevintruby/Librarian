@@ -25,7 +25,30 @@ module.exports = {
         'allowFirstLine': true
       },
     }],
-    'vue/order-in-components': 'off',
     'vue/name-property-casing': 'off',
-  }
+    'vue/order-in-components': ["error", {
+      "order": [
+        "el",
+        "name",
+        "parent",
+        "functional",
+        ["delimiters", "comments"],
+        ["props", "propsData"],
+        ["components", "directives", "filters"],
+        "extends",
+        "mixins",
+        ["inject", "provide"],
+        "inheritAttrs",
+        "model",
+        ["data", "asyncData"],
+        "validations",
+        "LIFECYCLE_HOOKS",
+        "computed",
+        "watch",
+        "methods",
+        ["template", "render"],
+        "renderError"
+      ]
+    }]
+  },
 };

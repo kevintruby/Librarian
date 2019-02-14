@@ -22,9 +22,9 @@
 <script>
   import Logo from '~/components/Logo.vue'
   export default {
-    name: 'ISBN Detail',
-    components: { Logo },
+    name: 'ISBNDetail',
     props: {},
+    components: { Logo },
     data() {
       return {
         book: {},
