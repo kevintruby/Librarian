@@ -34,18 +34,17 @@ router.get('/books', function (req, res, next) {
 });
 
 /* GET book by ID. */
-router.get('/books/:id', function (req, res, next) {
-  const id = parseInt(req.params.id);
-  if (id >= 0 && id < books.length) {
-    res.json(books[id]);
-  } else {
-    res.sendStatus(404);
-  }
+router.get('/books/isbn/:isbn', function (req, res, next) {
+  const isbn = req.params.isbn;
+  BookModel.findOne({ isbn })
+    .then(book_doc => {
+      res.json(book_doc);
+    }).catch(err => res.status(422).json(err));
 });
 
 /* GET book by ID. */
-router.get('/book-by-isbn/:isbn', function (req, res, next) {
-  let isbn = req.params.isbn;
+router.get('/new-book-by-isbn/:isbn', function (req, res, next) {
+  const isbn = req.params.isbn;
   google_books_api_interface.getBookByISBN(isbn).then(book_rsp => {
     if(_.isEmpty(book_rsp))
       res.sendStatus(404);

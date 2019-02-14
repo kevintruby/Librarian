@@ -23,7 +23,9 @@ module.exports = {
       'multiline': {
         'max': 3,
         'allowFirstLine': true
-      }
+      },
     }],
+    'vue/order-in-components': 'off',
+    'vue/name-property-casing': 'off',
   }
 };

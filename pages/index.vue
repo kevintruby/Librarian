@@ -9,7 +9,9 @@
         Personal library tracker, modeled after Plex interface
       </h2>
       <ul>
-        <li v-for="book in books" :key="book._id">Title: {{ book.title }}</li>
+        <li v-for="book in books" :key="book._id">
+          Title: <nuxt-link :to="{ name: 'books-isbn-isbn', params: { 'isbn': book.isbn } }">{{ book.title }}</nuxt-link>
+        </li>
       </ul>
       <div class="links">
         <a
@@ -41,8 +43,7 @@ export default {
   },
   async asyncData({ $axios }) {
     const books = await $axios.$get('/api/books');
-    const detail = await $axios.$get('/api/books/1');
-    return { books, detail }
+    return { books }
   },
   mounted() {
     let self = this;
@@ -51,8 +52,7 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
 .container {
   min-height: 100vh;
   display: flex;
